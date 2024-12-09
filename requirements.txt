@@ -1,0 +1,14 @@
+absl-py
+chess
+dm-control
+dm-env
+etils
+imageio
+immutabledict
+importlib_resources
+jax
+matplotlib
+numpy
+tqdm
+typing-extensions
+zstandard
