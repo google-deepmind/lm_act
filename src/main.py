@@ -107,69 +107,66 @@ _CONFIG_BY_AGENT = immutabledict.immutabledict({
 
 
 def main(argv: Sequence[str]) -> None:
-  if len(argv) > 1:
-    raise app.UsageError('Too many command-line arguments.')
+    logging.getLogger().setLevel(logging.WARNING)
 
-  logging.getLogger().setLevel(logging.WARNING)
+    print(f'Environment: {_ENVIRONMENT.value}')
+    print(f'Observation type: {_OBSERVATION_TYPE.value}')
+    print(f'Agent: {_AGENT.value}')
+    print(f'Num evaluation episodes: {_NUM_EVALUTION_EPISODES.value}')
 
-  print(f'Environment: {_ENVIRONMENT.value}')
-  print(f'Observation type: {_OBSERVATION_TYPE.value}')
-  print(f'Agent: {_AGENT.value}')
-  print(f'Num evaluation episodes: {_NUM_EVALUTION_EPISODES.value}')
+    scores = list()
+    num_steps = list()
+    num_invalid_actions = list()
+    num_illegal_actions = list()
+    num_empty_actions = list()
 
-  scores = list()
-  num_steps = list()
-  num_invalid_actions = list()
-  num_illegal_actions = list()
-  num_empty_actions = list()
-
-  for episode in tqdm.trange(_NUM_EVALUTION_EPISODES.value):
-    (
-        episode_score,
-        episode_num_steps,
-        episode_num_invalid_actions,
-        episode_num_illegal_actions,
-        episode_num_empty_actions,
-    ) = evaluate.evaluate_episode(
-        episode_idx=episode,
-        config=config_lib.Experiment(
-            num_demonstrations=_NUM_DEMONSTRATIONS.value,
-            num_evaluation_steps=_NUM_EVALUATION_STEPS.value,
-            agent=_CONFIG_BY_AGENT[_AGENT.value](
-                action_type=_ACTION_TYPE.value,
+    for episode in tqdm.trange(_NUM_EVALUTION_EPISODES.value):
+        (
+            episode_score,
+            episode_num_steps,
+            episode_num_invalid_actions,
+            episode_num_illegal_actions,
+            episode_num_empty_actions,
+        ) = evaluate.evaluate_episode(
+            episode_idx=episode,
+            config=config_lib.Experiment(
+                num_demonstrations=_NUM_DEMONSTRATIONS.value,
+                num_evaluation_steps=_NUM_EVALUATION_STEPS.value,
+                agent=_CONFIG_BY_AGENT[_AGENT.value](
+                    action_type=_ACTION_TYPE.value,
+                ),
+                environment=_CONFIG_BY_ENVIRONMENT[_ENVIRONMENT.value](
+                    observation_type=_OBSERVATION_TYPE.value,
+                    action_type=_ACTION_TYPE.value,
+                ),
+                prompt=config_lib.Prompt(
+                    show_legal_actions=None,
+                    use_chain_of_thought=None,
+                ),
             ),
-            environment=_CONFIG_BY_ENVIRONMENT[_ENVIRONMENT.value](
-                observation_type=_OBSERVATION_TYPE.value,
-                action_type=_ACTION_TYPE.value,
-            ),
-            prompt=config_lib.Prompt(
-                show_legal_actions=None,
-                use_chain_of_thought=None,
-            ),
-        ),
-    )
+        )
 
-    scores.append(episode_score)
-    num_steps.append(episode_num_steps)
-    num_invalid_actions.append(episode_num_invalid_actions)
-    num_illegal_actions.append(episode_num_illegal_actions)
-    num_empty_actions.append(episode_num_empty_actions)
+        scores.append(episode_score)
+        num_steps.append(episode_num_steps)
+        num_invalid_actions.append(episode_num_invalid_actions)
+        num_illegal_actions.append(episode_num_illegal_actions)
+        num_empty_actions.append(episode_num_empty_actions)
 
-    logging.info({
-        'episode': episode,
-        'score': episode_score,
-        'num_steps': episode_num_steps,
-        'num_invalid_actions': episode_num_invalid_actions,
-        'num_illegal_actions': episode_num_illegal_actions,
-        'num_empty_actions': episode_num_empty_actions,
-    })
+        logging.info({
+            'episode': episode,
+            'score': episode_score,
+            'num_steps': episode_num_steps,
+            'num_invalid_actions': episode_num_invalid_actions,
+            'num_illegal_actions': episode_num_illegal_actions,
+            'num_empty_actions': episode_num_empty_actions,
+        })
 
-  print(f'Average score: {np.mean(scores):.2f}')
-  print(f'Average num steps: {np.mean(num_steps):.2f}')
-  print(f'Average num invalid actions: {np.mean(num_invalid_actions):.2f}')
-  print(f'Average num illegal actions: {np.mean(num_illegal_actions):.2f}')
-  print(f'Average num empty actions: {np.mean(num_empty_actions):.2f}')
+    print(f'Average score: {np.mean(scores):.2f}')
+    print(f'Average num steps: {np.mean(num_steps):.2f}')
+    print(f'Average num invalid actions: {np.mean(num_invalid_actions):.2f}')
+    print(f'Average num illegal actions: {np.mean(num_illegal_actions):.2f}')
+    print(f'Average num empty actions: {np.mean(num_empty_actions):.2f}')
 
 
 if __name__ == '__main__':
-  app.run(main)
+    app.run(main)
