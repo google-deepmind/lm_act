@@ -4,17 +4,27 @@
   <img src="https://raw.githubusercontent.com/google-deepmind/lm_act/master/overview.svg" alt="Overview figure"/>
 </p>
 
-This repository provides an implementation of our paper [LMAct: A Benchmark for In-Context Imitation Learning with Long Multimodal Demonstrations](https://arxiv.org/abs/2412.01441).
+This repository provides an implementation of our ICML 2025 paper [LMAct: A Benchmark for In-Context Imitation Learning with Long Multimodal Demonstrations](https://arxiv.org/abs/2412.01441).
 
-> Today's largest foundation models have increasingly general capabilities, yet when used as agents, they often struggle with simple reasoning and decision-making tasks, even though they possess good factual knowledge of the task and how to solve it.
-In this paper, we present a benchmark to pressure-test these models' multimodal decision-making capabilities in the very long-context regime (up to one million tokens) and investigate whether they can learn from a large number of expert demonstrations in their context.
-We evaluate a wide range of state-of-the-art frontier models as policies across a battery of simple interactive decision-making tasks: playing tic-tac-toe, chess, and Atari, navigating grid worlds, solving crosswords, and controlling a simulated cheetah.
-We measure the performance of Claude 3.5 Sonnet, Gemini 1.5 Flash, Gemini 1.5 Pro, GPT-4o, o1-mini, and o1-preview under increasing amounts of expert demonstrations in the context --- from no demonstrations up to 512 full episodes, pushing these models' multimodal long-context reasoning capabilities to their limits.
-Across our tasks, today's frontier models rarely manage to fully reach expert performance, showcasing the difficulty of our benchmark.
-Presenting more demonstrations often has little effect, but some models steadily improve with more demonstrations on a few tasks.
-We investigate the effect of encoding observations as text or images and the impact of chain-of-thought prompting.
-Overall, our results suggest that even today's most capable models often struggle to imitate desired behavior by generalizing purely from in-context demonstrations.
-To help quantify the impact of other approaches and future innovations aiming to tackle this problem, we open source our benchmark that covers the zero-, few-, and many-shot regimes in a unified evaluation.
+> In this paper, we present a benchmark to pressure-test today’s frontier
+models’ multimodal decision-making capabilities in the very long-context regime
+(up to one million tokens) and investigate whether these models can learn from
+large numbers of expert demonstrations in their context.
+We evaluate the performance of Claude 3.5 Sonnet, Gemini 1.5 Flash, Gemini 1.5
+Pro, Gemini 2.0 Flash Experimental, GPT-4o, o1-mini, o1-preview, and o1 as
+policies across a battery of simple interactive decision-making tasks: playing
+tic-tac-toe, chess, and Atari, navigating grid worlds, solving crosswords, and
+controlling a simulated cheetah.
+We study increasing amounts of expert demonstrations in the context — from no
+demonstrations to 512 full episodes.
+Across our tasks, models rarely manage to fully reach expert performance, and
+often, presenting more demonstrations has little effect.
+Some models steadily improve with more demonstrations on a few tasks.
+We investigate the effect of encoding observations as text or images and the
+impact of chain-of-thought prompting.
+To help quantify the impact of other approaches and future innovations, we open
+source our benchmark that covers the zero-, few-, and many-shot regimes in a
+unified evaluation.
 
 ## Contents
 
@@ -55,7 +65,6 @@ To help quantify the impact of other approaches and future innovations aiming to
 └── requirements.txt                - Dependencies
 ```
 
-
 ## Installation
 
 Clone the source code into a local directory:
@@ -83,7 +92,6 @@ conda install pip
 pip install -r requirements.txt
 ```
 
-
 ### Installing Crafter
 
 Download the crafter repository:
@@ -91,7 +99,6 @@ Download the crafter repository:
 ```bash
 git clone https://github.com/danijar/crafter.git
 ```
-
 
 ### Installing Stockfish
 
@@ -106,7 +113,8 @@ cd ../..
 
 ### Downloading the Expert Demonstrations
 
-To download our expert demonstrations to the correct locations, run the following command:
+To download our expert demonstrations to the correct locations, run the
+following command:
 
 ```bash
 cd data
@@ -114,10 +122,10 @@ cd data
 cd ..
 ```
 
-
 ## Usage
 
-Before running any code, make sure to activate the conda environment and set the `PYTHONPATH`:
+Before running any code, make sure to activate the conda environment and set the
+`PYTHONPATH`:
 
 ```bash
 conda activate lm_act
@@ -133,11 +141,10 @@ python src/main.py \
   --num_demonstrations=0
 ```
 
-
 ## Citing this work
 
 ```latex
-@article{ruoss2024lmact,
+@inproceedings{ruoss2025lmact,
   author       = {Anian Ruoss and
                   Fabio Pardo and
                   Harris Chan and
@@ -146,8 +153,8 @@ python src/main.py \
                   Tim Genewein},
   title        = {{LMAct}: A Benchmark for In-Context Imitation Learning with
                   Long Multimodal Demonstrations
-  journal      = {arXiv:2412.01441},
-  year         = {2024},
+  booktitle    = {{ICML}},
+  year         = {2025},
 }
 ```
 
